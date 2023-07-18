@@ -1,0 +1,50 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CSharp_1kurs
+{
+    class Prog
+    {
+        public static void Main()
+        {
+            // K - кол-во листов, N - кол-во чисел для вывода
+            int K = 3;//int.Parse(Console.ReadLine());
+            int N = 3;//int.Parse(Console.ReadLine());
+            int listCount = 5;
+            var allList = new List<List<int>>();
+            var rand = new Random();
+
+            for (int i = 0; i < K; i++)
+            {
+                var list = new List<int>();
+                for (int j = 0; j < listCount; j++)
+                    list.Add(rand.Next(1, 20));
+                list.Sort();
+
+                allList.Add(list);
+            }
+
+            IEnumerable<int> union = allList[0];
+            Console.WriteLine("\nUnion:");
+            foreach (var e in allList)
+                union = union.Union(e);
+
+            var templist = union.ToList();
+
+            for (int i = 0; i < N; i++)
+                Console.Write(templist[i] + " ");
+
+             /*
+              * ОБЪЯСНЕНИЕ СЛОЖНОСТИ:
+             Использование Union у LINQ имеет сложность O(N), т.к. там тоже реализован
+             поиск по хэш таблице.
+
+             Поэтому я вполне могу говорить, что сложность моей программы O(N), если не учитывать
+             добавление элементов в списки, их сортировки, а также вывод на консоль.
+              */
+             
+        }
+    }
+}

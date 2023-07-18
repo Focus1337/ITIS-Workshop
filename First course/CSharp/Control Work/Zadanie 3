@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CSharp_1kurs
+{
+    class zadanie_3
+    {
+       static public string[] GetKeys(Dictionary<string, int>[] dictsArray)
+        {
+            var set = new HashSet<string>();
+            foreach (var e in dictsArray)
+                foreach (var i in e)
+                    set.Add(i.Key);
+
+            return set.ToArray();
+        }
+
+        static Dictionary<string, int> MaxDictionary(Dictionary<string, int>[] dictsArray)
+        {
+            var newDict = new Dictionary<string, int>();
+            var maxValue = 0;
+
+            foreach (var e in GetKeys(dictsArray))
+            {
+                maxValue = 0;
+                foreach (var i in dictsArray)
+                {
+                    if (i.ContainsKey(e))
+                        maxValue = Math.Max(i[e], maxValue);
+                }
+
+                newDict.Add(e, maxValue);
+            }
+
+           return newDict;
+        }
+
+        static Dictionary<string, int> SumDictionary(Dictionary<string, int>[] dictsArray)
+        {
+            var newDict = new Dictionary<string, int>();
+
+            var sumValue = 0;
+            foreach (var e in GetKeys(dictsArray))
+            {
+                sumValue = 0;
+                foreach (var i in dictsArray)
+                {
+                    if (i.ContainsKey(e))
+                        sumValue += i[e];
+                }
+
+                newDict.Add(e, sumValue);
+            }
+
+            return newDict;
+        }
+
+        static void Main()
+        {
+            // Инициализация массива словарей
+            Dictionary<string, int>[] dictsArray = new Dictionary<string, int>[2];
+            dictsArray[0] = new Dictionary<string, int>();
+            dictsArray[1] = new Dictionary<string, int>();
+
+            // Присвоние значений словарям
+            dictsArray[0].Add("a", 2);
+            dictsArray[0].Add("b", 5);
+            dictsArray[0].Add("c", 3);
+            dictsArray[0].Add("d", 21);
+            dictsArray[0].Add("e", 6);
+            dictsArray[0].Add("f", 8);
+            dictsArray[0].Add("g", 7);
+
+            dictsArray[1].Add("a", 2);
+            dictsArray[1].Add("b", 5);
+            dictsArray[1].Add("c", 8);
+            dictsArray[1].Add("d", 12);
+            dictsArray[1].Add("e", 6);
+
+            Console.WriteLine("Max Dict:");
+                foreach (var e in MaxDictionary(dictsArray))
+                    Console.WriteLine($"key: {e.Key}, value: {e.Value}");
+
+            Console.WriteLine("Sum Dict:");
+            foreach (var e in SumDictionary(dictsArray))
+                Console.WriteLine($"key: {e.Key}, value: {e.Value}");
+        }
+    }
+}

@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace CSharp_1kurs
+{
+    class Program
+    {
+        static void Main()
+        {
+            var staaaaaaaack = new VersStack<int>();
+            staaaaaaaack.Push(228);
+            staaaaaaaack.Push(1337);
+            Console.WriteLine(staaaaaaaack.Pop());
+            Console.WriteLine(staaaaaaaack.Pop());;
+            staaaaaaaack.Rollback(3);
+            staaaaaaaack.Rollback(2);
+            staaaaaaaack.Forget();
+        }
+    }
+
+    public class VersStack<T>
+    {
+        private int commit = 0; // типо как в git
+        public List<Stack<T>> data;
+
+        public VersStack()
+        {
+            data = new List<Stack<T>>();
+            data.Add(new Stack<T>() { });
+        }
+
+        public void Push(T value)
+        { // Т.к. это стек, он добавляет элементы в обратном порядке: 123 -> 321, поэтому нужно реверсить
+            data.Add(new Stack<T>(data.Last().Reverse()));
+            data.Last().Push(value);
+            commit++;
+        }
+
+        public T Pop()
+        {
+            if (data.Last().Count == 0)
+                throw new InvalidOperationException("The stack is empty");
+
+            T result = data.Last().Peek();
+            // Т.к. это стек, он добавляет элементы в обратном порядке: 123 -> 321, поэтому нужно реверсить
+            data.Add(new Stack<T>(data.Last().Reverse()));
+            data.Last().Pop();
+
+            commit++;
+
+            return result;
+        }
+
+        public void Rollback(int version)
+        {
+            if ((uint)version >= commit)
+                throw new InvalidOperationException("Version is incorrect");
+
+            data.RemoveRange(version + 1, commit - version);
+            commit = version;
+        }
+
+        public void Forget()
+        {
+            data[0] = data.Last();
+            data.RemoveRange(1, commit);
+            commit = 0;
+        }
+    }
+}

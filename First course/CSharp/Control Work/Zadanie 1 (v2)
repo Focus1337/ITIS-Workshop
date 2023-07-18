@@ -1,0 +1,76 @@
+using System;
+
+namespace Prog
+{
+    class SetOfStacks<T>
+    {
+        // Стоило сделать всё через указатели, так не совсем правильно получилось
+
+        readonly int maxValue; // максимальная вместимость (макс. кол-во стека)
+        SetOfStacks<T> prevStack; // пред. стек
+        SetOfStacks<T> headStack; // головной стек (главный, основной)
+        int elementCount; // кол-во элементов
+
+        public SetOfStacks(int capacity)
+        {
+            maxValue = capacity;
+        }
+
+        public SetOfStacks(SetOfStacks<T> stack)
+        {
+            maxValue = stack.maxValue;
+            prevStack = stack.prevStack;
+            elementCount = stack.elementCount;
+            headStack = stack.headStack;
+        }
+
+        public void Push(T value)
+        {
+            if (elementCount >= maxValue)
+            {
+                prevStack = new SetOfStacks<T>(this);
+                elementCount = 0;
+                headStack = null; // обнулим главный стек
+            }
+
+           if (headStack == null)
+            {
+
+            }
+            else
+            {
+                // если головной элемент не null, передадим его в след. стек
+            }
+            elementCount++;
+        }
+
+        public T PopAt(int index)
+        {
+            if (index == 0)
+                return Pop();
+
+            var stack = prevStack;
+
+            while (index-- > 0)
+                stack = stack.prevStack;
+
+            return stack.Pop();
+        }
+
+        public T Pop()
+        {
+            while (elementCount == 0)
+            {
+                elementCount = prevStack.elementCount;
+                headStack = prevStack.headStack;
+                prevStack = prevStack.prevStack;
+            }
+
+            // здесь нужно сделать так, чтобы главной элемент перешел к следующему стеку
+            var value = headStack.Value;
+
+            elementCount--;
+            return value;
+        }
+    }
+}

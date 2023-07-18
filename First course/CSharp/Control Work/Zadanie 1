@@ -1,0 +1,44 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CSharp_1kurs
+{
+    class SetOfStacks
+    {
+        public int maxVal { get; set; } // пороговое значение
+        public Stack<int> mainStack; // основной стек
+        List<Stack<int>> stacksList;
+
+        public SetOfStacks()
+        {
+            maxVal = int.Parse(Console.ReadLine());
+        }
+
+        public void IsFull() // проверка на полный стек
+        {
+            if (mainStack.Count == maxVal)
+            {
+                stacksList.Add(mainStack);
+                mainStack.Clear();
+            }
+        }
+
+        public void Push(int element)
+        {
+            IsFull();
+            mainStack.Push(element);
+        }
+
+        public void Pop(int element)
+        {
+            IsFull();
+            mainStack.Pop();
+        }
+
+        public void PopAt(int element)
+        {
+
+        }
+    }
+}

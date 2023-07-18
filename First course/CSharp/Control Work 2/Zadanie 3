@@ -1,0 +1,75 @@
+using System;
+using System.Collections.Generic;
+
+namespace CSharp_1kurs
+{
+    class Program
+    {
+        public static void Main()
+        {
+            int N = 2;//int.Parse(Console.ReadLine());
+            var listSections = new List<Section>();
+
+            int secStart, secEnd;
+
+            // записываем сначала конец координат, потом начало
+            for (int i = 0; i < N; i++)
+            {
+                secStart = int.Parse(Console.ReadLine());
+                secEnd = int.Parse(Console.ReadLine());
+                listSections.Add(new Section { End = secEnd, Start = secStart });
+            }
+
+            // СЛОЖНОСТЬ:
+            // O(N^2) :D
+            // просто перебор по всем
+            for (int i = 0; i < N; i++)
+                for (int j = 0; j < listSections.Count - 1; j++)
+                    Console.WriteLine(listSections[i].AreSectionsIntersected(listSections[j]));
+        }
+    }
+
+    public class Section
+    {
+        private int secStart;
+        private int secEnd;
+
+        public int Start
+        {
+            get => secStart;
+            set
+            {
+                if (value <= End)
+                    secStart = value;
+                else
+                {
+                    secStart = End;
+                    secEnd = value;
+                }
+                    
+            }
+        }
+        public int End
+        {
+            get => secEnd;
+            set
+            {
+                if (value >= Start)
+                    secEnd = value;
+                else
+                {
+                    secStart = value;
+                    secEnd = Start;
+                }
+            }
+        }
+        public bool AreSectionsIntersected(Section secondSection)
+        {
+            bool intersection = secondSection.Start >= Start && secondSection.Start <= End 
+                || secondSection.End >= Start && secondSection.End <= End
+                || secondSection.Start < Start && secondSection.End > End;
+
+            return intersection;
+        }
+    }
+}
