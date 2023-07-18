@@ -1,0 +1,94 @@
+﻿@model Portfolio.ViewModels.LoginViewModel
+@using static Portfolio.CustomHelpers.CustomHelper 
+
+@{
+    ViewBag.Title = "Log in";
+     Layout = "_Layout1";
+}
+
+<div class="container">
+    <div class="login-form">
+        <div class="row mt">
+            <div class="col-md-4">
+                <section>
+                    <h3>Local account to log in</h3>
+                    <hr>
+
+                    @* <form class="contact-form" method="post" asp-controller="Auth" asp-action="Login" *@
+                    @*       asp-route-returnUrl="@Model.ReturnUrl"> *@
+                        @using (Html.BeginForm("Login", "Auth", $"returnUrl={Model!.ReturnUrl}", FormMethod.Post, true, new {@class = "contact-form"}))
+                        {
+                            <div class="alert alert-info alert-dismissable" asp-validation-summary="ModelOnly">
+                                <a class="panel-close close" data-dismiss="alert">×</a>
+                                <i class="fa fa-coffee"></i>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" asp-for="Email" class="form-control" placeholder="Your Email" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" asp-for="Password" class="form-control" placeholder="Your Password" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="RememberMe" class="form-label">
+                                    <input asp-for="RememberMe"/>
+                                    @Html.DisplayNameFor(m => m.RememberMe)
+                                </label>
+                            </div>
+
+                            <div class="form-send">
+                                @Html.SubmitButton("submitButton", "Log In", "btn btn-large")
+                            </div>
+
+                            <div>
+                                <div class="form-group">
+                                    <a id="forgot-password" href="#">Forgot your password?</a>
+                                </div>
+                                <div class="form-group">
+                                    <a asp-controller="Auth" asp-action="Register">Register as a new user</a>
+                                </div>
+                                <div class="form-group">
+                                    <a id="resend-confirmation">Resend email confirmation</a>
+                                </div>
+                            </div>
+                        }
+                    @* </form> *@
+                </section>
+            </div>
+            
+            <div class="col-md-6 col-md-offset-2">
+                <section>
+                    <h3>Another service to log in.</h3>
+                    <hr />
+                    @{
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
+                            <div>
+                                <p>
+                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
+                                        about setting up this ASP.NET application to support logging in via external services</a>.
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-action="ExternalLogins" asp-controller="Auth" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
+                    }
+                </section>
+            </div>
+        </div>
+    </div>
+    <!-- /row -->
+</div>
+<!-- /container -->

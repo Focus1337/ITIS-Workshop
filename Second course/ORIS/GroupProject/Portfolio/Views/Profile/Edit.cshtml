@@ -1,0 +1,104 @@
+﻿@model Portfolio.ViewModels.EditProfileViewModel
+@{
+  ViewBag.Title = "Edit - Profile";
+  Layout = "_Layout2";
+}
+
+<div class="container" style="padding-top: 60px;">
+  <h1 class="page-header">Edit Profile</h1>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="text-center">
+        <img src="~/img/user.png" class="avatar img-circle img-thumbnail" alt="avatar">
+        <h6>Upload a different photo...</h6>
+        <input type="file" class="text-center center-block well well-sm">
+      </div>
+    </div>
+    <!-- edit form column -->
+    <div class="col-md-8 col-sm-6 col-xs-12 personal-info">
+      
+      <h3>Personal info</h3>
+      <form asp-controller="Profile" asp-action="Edit" method="post">
+        <div class="alert alert-info alert-dismissable" asp-validation-summary="ModelOnly">
+          <a class="panel-close close" data-dismiss="alert">×</a> 
+          <i class="fa fa-coffee"></i>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-3 control-label">First name:</label>
+          <div class="col-lg-8">
+            <input asp-for="Name" type="text" class="form-control" value="@Model.Name" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Last name:</label>
+          <div class="col-lg-8">
+            <input asp-for="LastName" type="text" class="form-control" value="@Model.LastName" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-lg-3 control-label">Email:</label>
+          <div class="col-lg-8">
+            <input asp-for="Email" type="email" class="form-control" value="@Model.Email" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">Username:</label>
+          <div class="col-md-8">
+            <input class="form-control" value="@Model.Email.Split('@')[0]" type="text" disabled>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <div class="form-send">
+              <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+            
+            <span></span>
+            <div class="form-send">
+              <button type="reset" class="btn btn-default">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+      
+      <h3>Security</h3>
+      <form asp-controller="Profile" asp-action="ChangePassword" method="post">
+        <div class="form-group">
+          <label class="col-md-3 control-label">Old Password:</label>
+          <div class="col-md-8">
+            <input asp-for="OldPassword" class="form-control" type="password" placeholder="Enter old password" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="col-md-3 control-label">New Password:</label>
+          <div class="col-md-8">
+            <input asp-for="NewPassword" class="form-control" type="password" placeholder="Enter new password" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <div class="form-send">
+              <button type="submit" class="btn btn-primary">Change</button>
+            </div>
+                  
+            <span></span>
+            <div class="form-send">
+              <button type="reset" class="btn btn-default">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
